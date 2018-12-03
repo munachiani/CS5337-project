@@ -571,9 +571,9 @@
     </definition>
     
     
-    <!-- ================== -->
+    <!-- ======================= -->
     <!-- Programming Assignments -->
-    <!-- ================== -->
+    <!-- ======================= -->
     
     <definition name="programming/create" extends="layout.qa">
         <put-attribute name="title" value="Create programming Assignment" />
@@ -689,6 +689,38 @@
         <put-attribute name="title" value="List of Submissions" />
         <put-attribute name="content" value="/WEB-INF/content/submission/online/list.jsp" />
     </definition>
+
+    <!-- ================= -->
+    <!-- Coding Submission -->
+    <!-- ================= -->
+
+    <definition name="submission/coding/view" extends="layout.extra">
+        <put-attribute name="title" value="View Coding Submission" />
+        <put-attribute name="content" value="/WEB-INF/content/submission/coding/view.jsp" />
+    </definition>
+
+    <definition name="submission/coding/list" extends="layout.qa">
+        <put-attribute name="title" value="List Coding Submission" />
+        <put-attribute name="content" value="/WEB-INF/content/submission/coding/edit.jsp" />
+    </definition>
+
+    <definition name="submission/coding/grade" extends="layout.jqueryui">
+        <put-attribute name="title" value="Grade Coding Submission" />
+        <put-attribute name="content" value="/WEB-INF/content/submission/coding/grade.jsp" />
+    </definition>
+    
+    <definition name="submission/coding/add" extends="layout.extra">
+        <put-attribute name="title" value="Add Coding Submission" />
+        <put-attribute name="content" value="/WEB-INF/content/submission/coding/add.jsp" />
+    </definition>
+
+    <definition name="submission/coding/description" extends="layout.jqueryui">
+        <put-attribute name="title" value="Grade Coding Submission" />
+        <put-attribute name="content" value="/WEB-INF/content/submission/coding/grade.jsp" />
+    </definition>
+    
+    
+    
 
     <!-- ====== -->
     <!-- Survey -->

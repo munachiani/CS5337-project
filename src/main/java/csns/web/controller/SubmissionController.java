@@ -108,7 +108,8 @@ public class SubmissionController {
         User user = SecurityUtils.getUser();
         Assignment assignment = assignmentDao.getAssignment( assignmentId );
         Submission submission = submissionDao.getSubmission( user, assignment );
-        if( submission == null ) submission = submissionDao.saveSubmission( new Submission( user, assignment ) );
+        if( submission == null ) submission = submissionDao
+            .saveSubmission( new Submission( user, assignment ) );
 
         models.put( "submission", submission );
         return "submission/view";
