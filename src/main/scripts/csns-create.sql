@@ -444,6 +444,9 @@ create table assignments (
     section_id                  bigint not null references sections(id),
     publish_date                timestamp,
     due_date                    timestamp,
+--    added two cloumns test_runs and unit_test
+    test_runs					bigint,
+    unit_test                   varchar(255),
     max_file_size               bigint,
     file_extensions             varchar(255),
     available_after_due_date    boolean not null default 't',
@@ -485,6 +488,8 @@ create table submissions (
     due_date        timestamp,
     grade           varchar(255),
     comments        text,
+--    added a cloumn test_runs
+    test_runs		bigint,
     grade_mailed    boolean not null default 'f',
     file_count      integer not null default 0,
     answer_sheet_id bigint unique references answer_sheets(id),

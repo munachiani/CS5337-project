@@ -116,12 +116,29 @@ function splitCode( code )
               <a href="<c:url value='/assignment/online/view?id=${assignment.id}' />"><img alt="[View Assignment]" 
                  title="View Assignment" src="<c:url value='/img/icons/script_view.png'/>" /></a>
             </c:if>
-            <c:if test="${not assignment.online and assignment.description != null}">
+            <!-- Coding Assignment  -->
+            <c:if test="${assignment.coding}">
+              <a href="<c:url value='/assignment/programming/view?id=${assignment.id}' />"><img alt="[View Assignment]" 
+                 title="View Assignment" src="<c:url value='/img/icons/script_view.png'/>" /></a>
+            </c:if>
+            <!-- Coding Assignment ends here  -->
+            <c:if test="${not assignment.coding and not assignment.online and assignment.description != null}">
               <a href="<c:url value='/assignment/view?id=${assignment.id}' />"><img alt="[View Assignment]" 
                  title="View Assignment" src="<c:url value='/img/icons/script_view.png'/>" /></a>
             </c:if>
-            <a href="<c:url value='/assignment/edit?id=${assignment.id}' />"><img alt="[Edit Assignment]"
+            <!-- if assignment is coding or regular assignment  -->
+            <c:choose>
+			    <c:when test="${assignment.coding}">
+			         <a href="<c:url value='/assignment/programming/edit?id=${assignment.id}' />"><img alt="[Edit Assignment]"
                title="Edit Assignment" src="<c:url value='/img/icons/script_edit.png'/>" /></a>
+			    </c:when>    
+			    <c:otherwise>
+			        <a href="<c:url value='/assignment/edit?id=${assignment.id}' />"><img alt="[Edit Assignment]"
+               title="Edit Assignment" src="<c:url value='/img/icons/script_edit.png'/>" /></a>
+			    </c:otherwise>
+           </c:choose>
+            <!-- check if assignment is coding or regular assignment here  -->
+            
           </td>
         </tr>
         </c:forEach>

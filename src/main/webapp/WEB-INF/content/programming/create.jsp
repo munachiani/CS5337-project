@@ -19,8 +19,8 @@
 								window.location.href = "../online/create?sectionId=${section.id}";
 							else if ($(this).val() == "RUBRIC")
 								window.location.href = "../rubric/assignment/create?sectionId=${section.id}";
-							else if ($(this).val() == "PASSIGNMENT")
-								window.location.href = "../assignment/programming/create?sectionId=${section.id}";
+							else if ($(this).val() == "REGULAR")
+								window.location.href = "../create?sectionId=${section.id}";
 						});
 		$(".res").hide();
 		if ($("#description\\.type").val() != "None")
@@ -50,10 +50,10 @@
 			- ${section.number}</a></li>
 	<li>Create Assignment <select name="assignmentType"
 		style="margin-left: 2em;">
+			<option value="REGULAR">Coding</option>
 			<option value="REGULAR">Regular</option>
 			<option value="ONLINE">Online</option>
 			<option value="RUBRIC">Rubric</option>
-			<option value="PASSIGNMENT">Programming Assignment</option>
 	</select>
 	</li>
 	<li class="align_right">
@@ -64,101 +64,139 @@
 		</form>
 	</li>
 </ul>
-<form>
-	<div class="form-group">
-		<table class="general">
-			<tr>
-				<th class="shrink">Name</th>
-				<td><input type="email" class="form-control leftinput"
-					id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="">
-				</td>
-			</tr>
-			<tr>
-				<th>Description</th>
-				<td><textarea class="form-control leftinput" rows="4" cols="4"></textarea>
-				</td>
-			</tr>
+<form:form modelAttribute="assignment" enctype="multipart/form-data">
+<table class="general">
+  <tr>
+    <th class="shrink">Name</th>
+    <td>
+      <form:input path="name" cssClass="leftinput" cssStyle="width: 99%;" maxlength="255" />
+      <div class="error"><form:errors path="name" /></div>
+    </td>
+  </tr>
 
-			<tr>
-				<th><a href="#" data-toggle="tooltip" data-placement="top" title="The alias of an assignment is a shorthand of the assignment name, e.g. 'HW1' for 'Homework 1'. It's used as column title in the grade sheet.">Alias</a></th>
-				<td>
-					<div class="col-md-4">
-						<input type="email" class="form-control leftinput" id="exampleInputEmail1"
-							size="10">
-					</div>
+  <tr>
+    <th>Description</th>
+    <td>
+      <form:select path="description.type">
+        <form:options items="${resourceTypes}" />
+      </form:select>
+    </td>
+  </tr>
 
-				</td>
-			</tr>
+  <tr id="resTEXT" class="res">
+    <th></th>
+    <td>
+      <form:textarea path="description.text" rows="5" cols="80" />
+      <div class="error"><form:errors path="description.text" /></div>
+    </td>
+  </tr>
 
-			<tr>
-				<th>Upload Test Case</th>
-				
-				<td>
-				<div class="col-md-4">
-				<input type="file" class="form-control leftinput">
-				</div>
-				</td>
-			</tr>
-			<tr>
-				<th>Number of times to run test</th>
-				<td>
-					<div class="col-md-1">
-						<input type="number" class="form-control leftinput" id="exampleInputEmail1"
-							size="10">
-					</div>
+  <tr id="resFILE" class="res">
+    <th></th>
+    <td>
+      <input name="file" type="file" size="80" style="width: 99%;" class="leftinput">
+      <div class="error"><form:errors path="description.file" /></div>
+    </td>
+  </tr>
 
-				</td>
-			</tr>
-			<tr>
-				<th>Total Points</th>
-				<td>
-					<div class="col-md-4">
-						<input type="text" class="form-control leftinput" id="exampleInputEmail1"
-							size="10">
-					</div>
+  <tr id="resURL" class="res">
+    <th></th>
+    <td>
+      <form:input path="description.url" cssClass="leftinput" cssStyle="width: 99%;" placeholder="http://" />
+      <div class="error"><form:errors path="description.url" /></div>
+    </td>
+  </tr>
+  
+  <!-- Test Case -->
+  
+  <tr>
+    <th><csns:help name="testcase">Test Case</csns:help></th>
+  <td>
+        <form:input path="unitTestPath" cssClass="leftinput" cssStyle="width: 55%;" placeholder="http://" />
+  
+  </td>
+  </tr>
+  <!-- Test Case -->
+  
+  <!-- Number of test runs -->
+  <tr>
+    <th><csns:help name="testruns">Test Runs</csns:help></th>
+  <td>
+        <form:input path="numTestRunsAllowed" cssClass="leftinput" size="30" maxlength="255" />
+        </td>
+  
+  </tr>
+  <!-- Number of test runs -->
 
-				</td>
-			</tr>
-			<tr>
-				<th>Allowed File Extension</th>
-				<td>
-					<div class="col-md-4">
-						<input type="text" class="form-control leftinput" id="exampleInputEmail1"
-							size="10">
-					</div>
+  <tr>
+    <th><csns:help name="alias">Alias</csns:help></th>
+    <td>
+      <form:input path="alias" cssClass="leftinput" size="30" maxlength="10" />
+    </td>
+  </tr>
 
-				</td>
-			</tr>
-			<tr>
-				<th>Published Date</th>
-				<td>
-					<div class="col-md-4">
-						<input type="text" id="dueDate" class="form-control leftinput"
-							id="exampleInputEmail1" size="10">
-					</div>
+  <tr>
+    <th>Total Points</th>
+    <td><form:input path="totalPoints" cssClass="leftinput" size="30" maxlength="255" /></td>
+  </tr>
 
-				</td>
-			</tr>
-			<tr>
-				<th>Due Date</th>
-				<td>
-					<div class="col-md-4">
-						<input type="text" id="publishDate" class="form-control leftinput"
-							id="exampleInputEmail1" size="10">
-					</div>
+  <tr>
+    <th><csns:help name="filext">Allowed File Extensions</csns:help></th>
+    <td>
+      <form:input path="fileExtensions" cssClass="leftinput" size="30" maxlength="255" />
+    </td>
+  </tr>
 
-				</td>
-			</tr>
-			<tr>
-				<th>Available after due date</th>
-				<td>
-				<input type="checkbox"/>
-				</td>
-			</tr>
-			<tr><th></th><td><input class="subbutton" type="submit" value="Create" /></td></tr>
+  <tr>
+    <th><csns:help name="pubdate">Publish Date</csns:help></th>
+    <td>
+      <form:input path="publishDate" cssClass="leftinput" size="30" maxlength="30" />
+    </td>
+  </tr>
 
+  <tr>
+    <th>Due Date</th>
+    <td>
+      <form:input path="dueDate" cssClass="leftinput" size="30" maxlength="30" />
+    </td>
+  </tr>
 
-		</table>
-	</div>
-</form>
+  <tr>
+    <th><csns:help name="aadd">Available After Due Date</csns:help></th>
+    <td>
+      <form:checkbox path="availableAfterDueDate" />
+    </td>
+  </tr>
+
+  <tr><th></th><td><input class="subbutton" type="submit" value="Create" /></td></tr>
+</table>
+</form:form>
+
+<div id="help-alias" class="help">The <em>alias</em> of an assignment is a
+shorthand of the assignment name, e.g. "HW1" for "Homework 1". It's used
+as column title in the grade sheet.</div>
+
+<div id="help-filext" class="help">Use space to separate the file extensions
+allowed for this assignment, e.g. <span class="tt">txt java html</span>. If
+this field is left empty, the students may upload files with any extension.</div>
+
+<div id="help-pubdate" class="help">
+<em>Publish Date</em> controls when the assignment is made available to the
+students. For example, if you want to conduct a quiz from 9pm to 9:30pm on
+3/3/2010, you can set the publish date to be 3/3/2010 21:00 and the due date
+to be 3/3/2010 21:30.</div>
+
+<div id="help-aadd" class="help">
+<p><em>Viewable After Due Date</em> determines whether the students can view
+the assignment and their own solutions after the due date. If you do not want
+the students to see the assignment after the due date (e.g. you may want to
+recycle the assignment questions later), then uncheck this option.</p>
+<p>Note that this option can be changed any time, which means that you can give
+the students temporary access to the assignment after the due date by enabling
+it and then disabling it later.</p></div>
+<div id="help-testcase" class="help">
+<p><em>Upload Test Case:</em> The test case should be uploaded in the file manger then the you right click and copy the address and paste it here</p></div>
+<div id="help-testruns" class="help">
+<p><em>Number of Test Runs:</em>This is the number of times Students can run the test</p></div>
+
 

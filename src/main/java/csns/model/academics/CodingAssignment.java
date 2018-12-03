@@ -22,8 +22,8 @@ public class CodingAssignment extends Assignment implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 
-	@Column(name = "programming_language", nullable = false)
-    protected String programmingLanguage;
+//	@Column(name = "p_language", nullable = false)
+//    protected String programmingLanguage;
     
     @Column(name = "unit_test", nullable = false)
     protected String unitTestPath;
@@ -49,14 +49,14 @@ public class CodingAssignment extends Assignment implements Serializable {
         assignment.totalPoints = totalPoints;
         assignment.dueDate = null;
         assignment.availableAfterDueDate = availableAfterDueDate;
-        assignment.programmingLanguage = programmingLanguage;
+//        assignment.programmingLanguage = programmingLanguage;
         assignment.numTestRunsAllowed = numTestRunsAllowed;
         assignment.unitTestPath = unitTestPath;
 
         return assignment;
     }
     
-    public String getProgrammingLanguage() 
+   /* public String getProgrammingLanguage() 
     {
 		return programmingLanguage;
 	}
@@ -65,7 +65,11 @@ public class CodingAssignment extends Assignment implements Serializable {
 	{
 		this.programmingLanguage = programmingLanguage;
 	}
-
+*/
+    @Override
+    public boolean isCoding() {
+    	return true;
+    }
 	public String getUnitTestPath() 
 	{
 		return unitTestPath;
