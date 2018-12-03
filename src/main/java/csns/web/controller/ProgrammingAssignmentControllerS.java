@@ -2,6 +2,8 @@ package csns.web.controller;
 
 import java.util.Calendar;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,6 +98,41 @@ public class ProgrammingAssignmentControllerS {
 	        models.put( "assignment", assignment );
 	        return assignment.isCoding() ? "assignment/programming/edit"
 	            : "assignment/edit";
+	    }
+	 
+	 @RequestMapping(value = "/assignment/programming/edit", method = RequestMethod.POST)
+	    public String edit(
+	        @ModelAttribute Assignment assignment,
+	        @RequestParam(value = "file", required = false) MultipartFile uploadedFile,
+	        HttpServletRequest request, BindingResult result,
+	        SessionStatus sessionStatus )
+	    {
+	        assignmentValidator.validate( assignment, uploadedFile, result );
+	        if( result.hasErrors() )
+	            return assignment.isOnline() ? "assignment/online/edit"
+	                : "assignment/programming/edit";
+
+	        if( !assignment.isOnline() )
+	        {
+	            Resource description = assignment.getDescription();
+	            if( description.getType() == ResourceType.NONE )
+	                assignment.setDescription( null );
+	            else if( description.getType() == ResourceType.FILE
+	                && uploadedFile != null && !uploadedFile.isEmpty() )
+	                description.setFile( fileIO.save( uploadedFile,
+	                    SecurityUtils.getUser(), false ) );
+	        }
+
+	        assignment = assignmentDao.saveAssignment( assignment );
+	        sessionStatus.setComplete();
+
+	        logger.info( SecurityUtils.getUser().getUsername()
+	            + " edited assignment " + assignment.getId() );
+
+	        return assignment.isOnline() && request.getParameter( "next" ) != null
+	            ? "redirect:/assignment/online/editQuestionSheet?assignmentId="
+	                + assignment.getId() : "redirect:/section/taught#section-"
+	                + assignment.getSection().getId();
 	    }
 		
 	}

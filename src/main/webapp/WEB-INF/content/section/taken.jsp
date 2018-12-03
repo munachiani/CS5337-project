@@ -48,11 +48,14 @@ function splitCode( code )
 <c:forEach items="${section.assignments}" var="assignment">
 <c:if test="${assignment.published}">
   <c:choose>
-    <c:when test="${not assignment.online}">
+    <c:when test="${not assignment.online and not assignment.coding}">
       <c:url var="link" value="/submission/view?assignmentId=${assignment.id}" />
     </c:when>
     <c:when test="${assignment.online and assignment.pastDue}">
       <c:url  var="link" value="/submission/online/view?assignmentId=${assignment.id}"/>
+    </c:when>
+    <c:when test="${assignment.coding}">
+      <c:url  var="link" value="/submission/coding/view?assignmentId=${assignment.id}"/>
     </c:when>
     <c:otherwise>
       <c:url  var="link" value="/submission/online/edit?assignmentId=${assignment.id}"/>

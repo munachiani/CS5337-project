@@ -103,6 +103,13 @@ public class Submission implements Serializable {
     {
         return false;
     }
+    
+//    Check if the assignment is a Coding Assignment
+    
+    public boolean isCoding() 
+    {
+    	return false;
+    }
 
     public void incrementFileCount()
     {

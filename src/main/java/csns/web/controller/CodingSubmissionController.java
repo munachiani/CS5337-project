@@ -23,7 +23,7 @@ import csns.model.core.User;
 import csns.security.SecurityUtils;
 
 @Controller
-public class CodingSubmissionController extends SubmissionController {
+public class CodingSubmissionController  {
 	
 	@Autowired
     private AssignmentDao assignmentDao;
