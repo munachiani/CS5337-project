@@ -9,16 +9,8 @@ $(function(){
     $("#publishDate").datetimepicker({
         timeFormat: 'HH:mm:ss'
     });
-    $("#dueDate").datetimepicker({
+    $('#dueDate').datetimepicker({
         timeFormat: 'HH:mm:ss'
-    });
-    $("select[name='assignmentType']").click(function(){
-       if( $(this).val() == "ONLINE" )
-           window.location.href = "online/create?sectionId=${section.id}";
-       else if( $(this).val() == "RUBRIC" )
-    	   window.location.href = "../rubric/assignment/create?sectionId=${section.id}";
-       else if($(this).val() == "CODING")
-    	   window.location.href = "../assignment/programming/create?sectionId=${section.id}";
     });
     $(".res").hide();
     if($("#description\\.type").val() != "None")
@@ -37,6 +29,12 @@ $(function(){
         modal: true
     });
 });
+function deleteAssignment( id )
+{
+    var msg = "Are you sure you want to delete this assignment?";
+    if( confirm(msg) )
+        window.location.href = "delete?id=" + id;
+}
 function help( name )
 {
     $("#help-"+name).dialog("open");
@@ -45,21 +43,13 @@ function help( name )
 
 <ul id="title">
 <li><a class="bc" href="<c:url value='/section/taught#section-${section.id}' />">${section.course.code} - ${section.number}</a></li>
-<li>Create Assignment
-  <select name="assignmentType" style="margin-left: 2em;">
-    <option value="REGULAR">Regular</option>
-    <option value="ONLINE">Online</option>
-    <option value="RUBRIC">Rubric</option>
-    <option value="CODING">Coding</option>
-  </select>
-</li>
-<li class="align_right">
-  <form action="search" method="get">
-    <input name="text" type="text" size="40" />
-    <input name="sectionId" type="hidden" value="${param.sectionId}" />
-    <input name="search" type="submit" value="Search" class="subbutton" />
-  </form>
-</li>
+<li>${assignment.name}</li>
+<c:if test="${assignment.online}">
+<li class="align_right"><a href="online/editQuestionSheet?assignmentId=${assignment.id}"><img title="Edit Questions"
+  alt="[Edit Question]" src="<c:url value='/img/icons/page_edit.png' />" /></a></li>
+</c:if>
+<li class="align_right"><a href="javascript:deleteAssignment(${assignment.id})"><img title="Delete Assignment"
+  alt="[Delete Assignment]" src="<c:url value='/img/icons/script_delete.png' />" /></a></li>
 </ul>
 
 <form:form modelAttribute="assignment" enctype="multipart/form-data">
@@ -78,7 +68,11 @@ function help( name )
       <form:select path="description.type">
         <form:options items="${resourceTypes}" />
       </form:select>
-    </td>
+      <c:if test="${assignment.description.type == 'FILE' and assignment.description.file != null}">
+        <span style="margin-left: 2em;">
+        <a href="<c:url value='/download?fileId=${assignment.description.file.id}' />">${assignment.description.file.name}</a>
+        </span>
+      </c:if>
   </tr>
 
   <tr id="resTEXT" class="res">
@@ -104,12 +98,30 @@ function help( name )
       <div class="error"><form:errors path="description.url" /></div>
     </td>
   </tr>
+  
+    <!-- Test Case -->
+  
+  <tr>
+    <th><csns:help name="testcase">Test Case</csns:help></th>
+  <td>
+        <form:input path="unitTestPath" cssClass="leftinput" cssStyle="width: 55%;" placeholder="http://" />
+  
+  </td>
+  </tr>
+  <!-- Test Case -->
+  
+  <!-- Number of test runs -->
+  <tr>
+    <th><csns:help name="testruns">Test Runs</csns:help></th>
+  <td>
+        <form:input path="numTestRunsAllowed" cssClass="leftinput" size="30" maxlength="255" />
+        </td>
+  
+  </tr>
 
   <tr>
     <th><csns:help name="alias">Alias</csns:help></th>
-    <td>
-      <form:input path="alias" cssClass="leftinput" size="30" maxlength="10" />
-    </td>
+    <td><form:input path="alias" cssClass="leftinput" size="30" maxlength="10" /></td>
   </tr>
 
   <tr>
@@ -119,33 +131,30 @@ function help( name )
 
   <tr>
     <th><csns:help name="filext">Allowed File Extensions</csns:help></th>
-    <td>
-      <form:input path="fileExtensions" cssClass="leftinput" size="30" maxlength="255" />
-    </td>
+    <td><form:input path="fileExtensions" cssClass="leftinput" size="30" maxlength="255" /></td>
   </tr>
 
+  <c:if test="${not assignment.published}">
   <tr>
     <th><csns:help name="pubdate">Publish Date</csns:help></th>
-    <td>
-      <form:input path="publishDate" cssClass="leftinput" size="30" maxlength="30" />
-    </td>
+    <td><form:input path="publishDate" cssClass="leftinput" size="30" maxlength="30" /></td>
   </tr>
+  </c:if>
 
   <tr>
     <th>Due Date</th>
-    <td>
-      <form:input path="dueDate" cssClass="leftinput" size="30" maxlength="30" />
-    </td>
+    <td><form:input path="dueDate" cssClass="leftinput" size="30" maxlength="30" /></td>
   </tr>
 
   <tr>
     <th><csns:help name="aadd">Available After Due Date</csns:help></th>
-    <td>
-      <form:checkbox path="availableAfterDueDate" />
-    </td>
+    <td><form:checkbox path="availableAfterDueDate" /></td>
   </tr>
 
-  <tr><th></th><td><input class="subbutton" type="submit" value="Create" /></td></tr>
+  <tr>
+    <th></th>
+    <td><input class="subbutton" type="submit" name="save" value="Save" /></td>
+  </tr>
 </table>
 </form:form>
 
@@ -171,3 +180,7 @@ recycle the assignment questions later), then uncheck this option.</p>
 <p>Note that this option can be changed any time, which means that you can give
 the students temporary access to the assignment after the due date by enabling
 it and then disabling it later.</p></div>
+<div id="help-testcase" class="help">
+<p><em>Upload Test Case:</em> The test case should be uploaded in the file manger then the you right click and copy the address and paste it here</p></div>
+<div id="help-testruns" class="help">
+<p><em>Number of Test Runs:</em>This is the number of times Students can run the test</p></div>

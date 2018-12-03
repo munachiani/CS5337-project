@@ -136,6 +136,10 @@ public class Assignment implements Serializable {
     {
         return false;
     }
+    
+    public boolean isCoding() {
+    	return false;
+    }
 
     public boolean isPastDue()
     {
