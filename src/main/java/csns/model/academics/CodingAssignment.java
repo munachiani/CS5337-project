@@ -22,13 +22,13 @@ public class CodingAssignment extends Assignment implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 
-	@Column(name = "programming_language", nullable = false)
-    protected String programmingLanguage;
+	//@Column(name = "programming_language", nullable = false)
+    //protected String programmingLanguage;
     
-    @Column(name = "unit_test", nullable = false)
+    @Column(name = "unit_test")
     protected String unitTestPath;
-
-    @Column(name = "test_runs", nullable = false)
+    
+    @Column(name = "test_runs")
     protected int numTestRunsAllowed;
 
 	public CodingAssignment() 
@@ -49,22 +49,12 @@ public class CodingAssignment extends Assignment implements Serializable {
         assignment.totalPoints = totalPoints;
         assignment.dueDate = null;
         assignment.availableAfterDueDate = availableAfterDueDate;
-        assignment.programmingLanguage = programmingLanguage;
+        //assignment.programmingLanguage = programmingLanguage;
         assignment.numTestRunsAllowed = numTestRunsAllowed;
         assignment.unitTestPath = unitTestPath;
 
         return assignment;
     }
-    
-    public String getProgrammingLanguage() 
-    {
-		return programmingLanguage;
-	}
-
-	public void setProgrammingLanguage( String programmingLanguage ) 
-	{
-		this.programmingLanguage = programmingLanguage;
-	}
 
 	public String getUnitTestPath() 
 	{
