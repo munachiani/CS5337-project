@@ -67,7 +67,8 @@ import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
 
 @Controller
-public class CodingSubmissionController {
+public class CodingSubmissionController  {
+
 	
     @Autowired
     private FileDao fileDao;

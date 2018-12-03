@@ -29,6 +29,11 @@ public class CodingSubmission extends Submission implements Serializable {
 		numTestRuns = 0;
 	}
 
+	@Override
+	public boolean isCoding() 
+	{
+		return true;
+	}
 	public int getNumTestRuns() 
 	{
 		return numTestRuns;
