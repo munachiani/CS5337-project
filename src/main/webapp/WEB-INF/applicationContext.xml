@@ -91,6 +91,7 @@
         <security:intercept-url pattern="/assignment/description" access="authenticated" />
         <security:intercept-url pattern="/assignment/**" access="authenticated and principal.instructor" />
         <security:intercept-url pattern="/submission/view" access="authenticated" />
+        <security:intercept-url pattern="/submission/coding/view" access="authenticated" />
         <security:intercept-url pattern="/submission/description" access="authenticated" />
         <security:intercept-url pattern="/submission/upload" access="authenticated" />
         <security:intercept-url pattern="/submission/remove" access="authenticated" />

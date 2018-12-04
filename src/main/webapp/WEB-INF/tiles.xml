@@ -694,12 +694,12 @@
     <!-- Coding Submission -->
     <!-- ================= -->
 
-    <definition name="submission/coding/view" extends="layout.extra">
+    <definition name="submission/coding/view" extends="layout.jqueryui">
         <put-attribute name="title" value="View Coding Submission" />
         <put-attribute name="content" value="/WEB-INF/content/submission/coding/view.jsp" />
     </definition>
 
-    <definition name="submission/coding/list" extends="layout.qa">
+   <!--  <definition name="submission/coding/list" extends="layout.qa">
         <put-attribute name="title" value="List Coding Submission" />
         <put-attribute name="content" value="/WEB-INF/content/submission/coding/edit.jsp" />
     </definition>
@@ -717,7 +717,7 @@
     <definition name="submission/coding/description" extends="layout.jqueryui">
         <put-attribute name="title" value="Grade Coding Submission" />
         <put-attribute name="content" value="/WEB-INF/content/submission/coding/grade.jsp" />
-    </definition>
+    </definition> -->
     
     
     
