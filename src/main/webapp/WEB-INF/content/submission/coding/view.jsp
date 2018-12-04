@@ -26,6 +26,17 @@ function remove( fileId )
 }
 </script>
 
+<script type="text/javascript">
+$(document).ready(function() {
+    $("#myDiv").hide();
+
+    $("#runtest").click(function() {
+    	('#myDiv').show();
+    });
+
+});
+</script>
+
 <ul id="title">
 <li><a class="bc" href="<c:url value='/section/taken#section-${section.id}' />">${section.course.code} - ${section.number}</a></li>
 <li>${submission.assignment.name}</li>
@@ -35,7 +46,7 @@ function remove( fileId )
 </c:if>
 </ul>
 
-<table class="general autowidth">
+<table class="general autowidth" id="table_header">
 <c:if test="${assignment.description != null and (assignment.availableAfterDueDate || not submission.pastDue)}">
 <tr>
   <th>Description</th>
@@ -70,18 +81,28 @@ function remove( fileId )
   <th>Due Date</th><td><csns:dueDate date="${submission.effectiveDueDate.time}"
   datePast="${submission.pastDue}" /></td>
 </tr>
+<c:if test="${fn:length(submission.files) > 0}">
+<tr>
+  <th>Number of Tokens</th><td>5</td>
+</tr>
+</c:if>
 </table>
 
-<p></p>
+<p>
 
 <c:if test="${not submission.pastDue}">
 <form method="post" action="upload" enctype="multipart/form-data"><p>
 File: <input type="file" name="uploadedFile" size="50" />
-<input type="submit" class="subbutton" value="Upload" />
+<input type="submit" class="subbutton" id="testcase" value="Upload" />
+<c:if test="${fn:length(submission.files) > 0}">
+<input type="submit" class="subbutton" id="runtest" value="Run Test" /> 
+
+</c:if>
 <input type="hidden" name="id" value="${submission.id}" />
 <input type="hidden" name="additional" value="false" />
 </p></form>
 </c:if>
+
 
 <c:if test="${fn:length(submission.files) > 0 and (assignment.availableAfterDueDate || not submission.pastDue)}">
 <table class="viewtable">
@@ -107,6 +128,7 @@ File: <input type="file" name="uploadedFile" size="50" />
 </tbody>
 </table>
 </c:if>
+<div id="myDiv">djhvdjfhj</div>
 
 <c:if test="${submission.gradeMailed}">
 <h4>Grade</h4>
