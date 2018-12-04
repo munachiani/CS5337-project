@@ -667,6 +667,12 @@ table {
     border-spacing: 0px;
     border-collapse: collapse;
 }
+.general-short {
+    width:50%;
+    border: 0px;
+    border-spacing: 0px;
+    border-collapse: collapse;
+}
 .general tr:hover {
     background-color:#dddddd;
 }

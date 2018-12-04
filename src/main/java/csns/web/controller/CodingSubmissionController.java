@@ -235,7 +235,7 @@ public class CodingSubmissionController  {
             + " from submission " + submission.getId() );
     }
     
-    @RequestMapping("/submission/coding/list")
+    @RequestMapping(value="/submission/coding/list",params = "assignmentId")
     public String list( @RequestParam Long assignmentId, ModelMap models )
     {
         Assignment assignment = assignmentDao.getAssignment( assignmentId );

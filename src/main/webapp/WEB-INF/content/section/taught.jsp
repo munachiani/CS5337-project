@@ -106,7 +106,15 @@ function splitCode( code )
         <tbody>
         <c:forEach items="${section.assignments}" var="assignment">
         <tr>
-          <td><a href="<c:url value='/submission/list?assignmentId=${assignment.id}' />">${assignment.name}</a></td>
+        <c:choose>
+        <c:when test="${assignment.coding}">
+         <td><a href="<c:url value='/submission/coding/list?assignmentId=${assignment.id}' />">${assignment.name}</a></td>
+         </c:when>
+        <c:otherwise>
+        <td><a href="<c:url value='/submission/list?assignmentId=${assignment.id}' />">${assignment.name}</a></td>
+        </c:otherwise>
+        </c:choose>
+          
           <td class="datetime"><csns:publishDate date="${assignment.publishDate.time}" datePattern="yyyy-MM-dd hh:mm a"
               datePast="${assignment.published}" itemId="${assignment.id}" itemType="assignment" /></td>
           <td class="datetime"><csns:dueDate date="${assignment.dueDate.time}"

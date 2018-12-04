@@ -699,7 +699,7 @@
         <put-attribute name="content" value="/WEB-INF/content/submission/coding/view.jsp" />
     </definition>
 
-    <definition name="submission/coding/list" extends="layout.qa">
+    <definition name="submission/coding/list" extends="layout.jqueryui">
         <put-attribute name="title" value="List of Coding Submission" />
         <put-attribute name="content" value="/WEB-INF/content/submission/coding/list.jsp" />
     </definition>
@@ -714,7 +714,7 @@
         <put-attribute name="content" value="/WEB-INF/content/submission/coding/add.jsp" />
     </definition>
 
-    <definition name="submission/coding/description" extends="layout.jqueryui">
+    <definition name="submission/coding/description" extends="layout.qa">
         <put-attribute name="title" value="View Coding Submission Description" />
         <put-attribute name="content" value="/WEB-INF/content/submission/coding/description.jsp" />
     </definition>

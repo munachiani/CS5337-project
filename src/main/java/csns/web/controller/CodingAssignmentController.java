@@ -14,7 +14,7 @@ import csns.model.academics.dao.SectionDao;
 import csns.security.SecurityUtils;
 
 @Controller
-public class CodingAssignment {
+public class CodingAssignmentController {
 	
 	 @Autowired
 	    private SectionDao sectionDao;
@@ -22,7 +22,7 @@ public class CodingAssignment {
 	    @Autowired
 	    private AssignmentDao assignmentDao;
 
-	    private static final Logger logger = LoggerFactory.getLogger( CodingAssignment.class );
+	    private static final Logger logger = LoggerFactory.getLogger( CodingAssignmentController.class );
 
 	    @RequestMapping("/assignment/programming/view")
 	    public String view( @RequestParam Long id,
