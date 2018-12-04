@@ -97,57 +97,24 @@ public class CodingSubmissionController  {
         binder.registerCustomEditor( Calendar.class,
             new CalendarPropertyEditor( "MM/dd/yyyy HH:mm:ss" ) );
     }
-
-
-    @RequestMapping("/submission/coding/view")
-    public String view( @RequestParam Long assignmentId, ModelMap models )
+    @RequestMapping(value = "/submission/coding/view", params = "id")
+    public String view1( @RequestParam Long id, ModelMap models )
     {
-        CodingAssignment assignment = (CodingAssignment) assignmentDao.getAssignment( assignmentId );
-        if( !assignment.isPastDue() )
-            return "redirect:/submission/coding/edit?assignmentId="
-                + assignmentId;
+        models.put( "submission", submissionDao.getSubmission( id ) );
+        return "submission/coding/view";
+    }
 
-        User student = SecurityUtils.getUser();
-        CodingSubmission submission = (CodingSubmission) submissionDao.getSubmission(
-            student, assignment );
-        if( submission != null && !submission.isPastDue() )
-            return "redirect:/submission/coding/edit?assignmentId="
-                + assignmentId;
-
-        if( submission == null )
-        {
-            submission = new CodingSubmission( );
-            submission = (CodingSubmission) submissionDao.saveSubmission( submission );
-        }
+    @RequestMapping(value = "/submission/coding/view", params = "assignmentId")
+    public String view2( @RequestParam Long assignmentId, ModelMap models )
+    {
+        User user = SecurityUtils.getUser();
+        Assignment assignment = assignmentDao.getAssignment( assignmentId );
+        Submission submission = submissionDao.getSubmission( user, assignment );
+        if( submission == null ) submission = submissionDao
+            .saveSubmission( new Submission( user, assignment ) );
 
         models.put( "submission", submission );
         return "submission/coding/view";
-    }
-    
-    @RequestMapping("/submission/coding/remove")
-    @ResponseBody
-    public void remove( @RequestParam Long fileId )
-    {
-        User user = SecurityUtils.getUser();
-        File file = fileDao.getFile( fileId );
-        Submission submission = file.getSubmission();
-        if( !submission.isPastDue()
-            || submission.getAssignment().getSection().isInstructor( user ) )
-        {
-            file.setSubmission( null );
-            if( submission.getFiles().remove( file ) )
-                submission.decrementFileCount();
-            submissionDao.saveSubmission( submission );
-        }
-
-        logger.info( user.getUsername() + " removed file " + file.getId()
-            + " from submission " + submission.getId() );
-    }
-    
-    @RequestMapping("/submission/coding/grade")
-    public String grade( @RequestParam Long id, ModelMap models ) {
-    	models.put( "submission", submissionDao.getSubmission( id ) );
-    	return "submission/coding/grade";
     }
     
     @RequestMapping(value = "/submission/coding/description")
@@ -188,6 +155,13 @@ public class CodingSubmissionController  {
                 models.put( "message", "error.resource.type.invalid" );
                 return "error";
         }
+    }
+    
+    @RequestMapping(value = "/submission/coding/add", method = RequestMethod.GET)
+    public String upload( @RequestParam Long id, ModelMap models )
+    {
+        models.put( "submission", submissionDao.getSubmission( id ) );
+        return "submission/coding/add";
     }
     
     @RequestMapping(value = "/submission/coding/upload", method = RequestMethod.POST)
@@ -241,6 +215,26 @@ public class CodingSubmissionController  {
         return "redirect:" + view;
     }
     
+    @RequestMapping("/submission/coding/remove")
+    @ResponseBody
+    public void remove( @RequestParam Long fileId )
+    {
+        User user = SecurityUtils.getUser();
+        File file = fileDao.getFile( fileId );
+        Submission submission = file.getSubmission();
+        if( !submission.isPastDue()
+            || submission.getAssignment().getSection().isInstructor( user ) )
+        {
+            file.setSubmission( null );
+            if( submission.getFiles().remove( file ) )
+                submission.decrementFileCount();
+            submissionDao.saveSubmission( submission );
+        }
+
+        logger.info( user.getUsername() + " removed file " + file.getId()
+            + " from submission " + submission.getId() );
+    }
+    
     @RequestMapping("/submission/coding/list")
     public String list( @RequestParam Long assignmentId, ModelMap models )
     {
@@ -276,6 +270,13 @@ public class CodingSubmissionController  {
         models.put( "assignment", assignment );
         return "submission/coding/list";
     }
+    
+    @RequestMapping("/submission/coding/grade")
+    public String grade( @RequestParam Long id, ModelMap models ) {
+    	models.put( "submission", submissionDao.getSubmission( id ) );
+    	return "submission/coding/grade";
+    }
+    
 
     @RequestMapping(value = "/submission/coding/edit", params = "dueDate")
     public String editDueDate( @RequestParam Long id,
