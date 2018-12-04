@@ -27,13 +27,13 @@ function remove( fileId )
 </script>
 
 <script type="text/javascript">
-$(document).ready(function() {
+ 
+$(function(){
     $("#myDiv").hide();
-
-    $("#runtest").click(function() {
-    	('#myDiv').show();
+    $("#runtest").on("click", function(){
+    	$("#table_header td:last").html(4);
+        $("#myDiv").toggle();
     });
-
 });
 </script>
 
@@ -45,7 +45,8 @@ $(document).ready(function() {
   title="Download All Files" alt="[Download All Files]" src="<c:url value='/img/icons/download.png' />" /></a>
 </c:if>
 </ul>
-
+<div class="row">
+<div class="col-md-6">
 <table class="general autowidth" id="table_header">
 <c:if test="${assignment.description != null and (assignment.availableAfterDueDate || not submission.pastDue)}">
 <tr>
@@ -87,6 +88,32 @@ $(document).ready(function() {
 </tr>
 </c:if>
 </table>
+</div>
+<div class="col-md-6" id="myDiv">
+<h3> Test Result</h3>
+<table class="general autowidth" id="table_header">
+  <tr width="40%">
+    <th>Input</th>
+  <td>
+ [1,2,3,1]
+  </td>
+  </tr>
+  <tr>
+    <th>Output</th>
+  <td>
+7
+  </td>
+  </tr>
+  <tr>
+    <th>Expected</th>
+  <td>
+ 4
+  </td>
+  </tr>
+</table>
+</div>
+</div>
+
 
 <p>
 
@@ -95,13 +122,15 @@ $(document).ready(function() {
 File: <input type="file" name="uploadedFile" size="50" />
 <input type="submit" class="subbutton" id="testcase" value="Upload" />
 <c:if test="${fn:length(submission.files) > 0}">
-<input type="submit" class="subbutton" id="runtest" value="Run Test" /> 
+<input class="subbutton" id="runtest" style="width:80px" value="Run Test" /> 
 
 </c:if>
 <input type="hidden" name="id" value="${submission.id}" />
 <input type="hidden" name="additional" value="false" />
 </p></form>
 </c:if>
+
+
 
 
 <c:if test="${fn:length(submission.files) > 0 and (assignment.availableAfterDueDate || not submission.pastDue)}">
@@ -128,7 +157,6 @@ File: <input type="file" name="uploadedFile" size="50" />
 </tbody>
 </table>
 </c:if>
-<div id="myDiv">djhvdjfhj</div>
 
 <c:if test="${submission.gradeMailed}">
 <h4>Grade</h4>
